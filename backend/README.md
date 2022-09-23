@@ -56,20 +56,20 @@ You will need to provide detailed documentation of your API endpoints including 
 ### API Endpoints
 | HTTP Verbs | Endpoints | Action |
 | --- | --- | --- |
-| GET | api/questions | To retrieve all questions, including pagination(every 10 questions) |
-| GET | /api/categories | To retrieve all categories |
-| POST | /api/questions | To create a new questions with text, category and difficulty score |
-| POST | /api/categories/{int}/questions | To retrieve all questions based on category, including pagination(every 10 questions) |
-| POST | /api/questions/search | To retrieve all questions that matches search string |
-| POST | /api/quizzes | This endpoint should take a category and previous question parameters and return a random question within the given category if provided |
-| DELETE | /api/questions/{int} | To delete a single question |
+| `GET` | `api/questions` | To retrieve all questions, including pagination(every 10 questions) |
+| `GET` | `/api/categories` | To retrieve all categories |
+| `POST` | `/api/questions` | To create a new questions with text, category and difficulty score |
+| `POST` | `/api/categories/{int}/questions` | To retrieve all questions based on category, including pagination(every 10 questions) |
+| `POST` | `/api/questions/search` | To retrieve all questions that matches search string |
+| `POST` | `/api/quizzes` | This endpoint should take a category and previous question parameters and return a random question within the given category if provided |
+| `DELETE` | `/api/questions/{int}` | To delete a single question |
 
 
 `GET '/api/v1.0/categories'`
 
 - Fetches a dictionary of categories in which the keys are the ids and the value is the corresponding string of the category
 - Request Arguments: None
-- Returns: An object with a single key, `categories`, that contains an object of `id: category_string` key: value pairs.
+- Returns:
 
 ```json
 {
@@ -79,6 +79,141 @@ You will need to provide detailed documentation of your API endpoints including 
   "4": "History",
   "5": "Entertainment",
   "6": "Sports"
+}
+```
+
+
+`GET '/api/v1.0/questions'`
+- Fetches a dictionary of questions in which the keys are the ids and the value is the corresponding string of the question
+- Request Arguments: None
+- Returns: 
+
+```json
+{
+  "categories": {
+    "1": "Science",
+    "2": "Art",
+    "3": "Geography",
+    "4": "History",
+    "5": "Entertainment",
+    "6": "Sports"
+  },
+  "current_category": null,
+  "questions": [
+    {
+      "answer": "Maya Angelou",
+      "category": 4,
+      "difficulty": 2,
+      "id": 5,
+      "question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
+    },
+  ],
+  "total_questions": 19
+}
+```
+
+`POST '/api/v1.0/categories/<int:category_id>/questions'`
+- Fetches a dictionary of questions based on category in which the keys are the ids and the value is the corresponding string of the question
+- Request Arguments: None
+- Returns:
+
+```json
+{
+  "current_category": 1,
+  "questions": [
+    {
+      "answer": "The Liver",
+      "category": 1,
+      "difficulty": 4,
+      "id": 20,
+      "question": "What is the heaviest organ in the human body?"
+    },
+  ],
+  "total_questions": 4
+}
+```
+
+`POST '/api/v1.0/questions'`
+- Create a new question with text, category and difficulty score
+- Request Arguments:
+```json
+{
+  "question": "What is the capital of France?",
+  "answer": "Paris",
+  "difficulty": 1,
+  "category": 3
+}
+```
+- Returns:
+
+```json
+{
+  "created": 21,
+  "success": true
+}
+```
+
+`POST '/api/v1.0/questions/search'`
+- Fetches a dictionary of questions based on search string in which the keys are the ids and the value is the corresponding string of the question
+- Request Arguments:
+```json
+{
+  "searchTerm": "title"
+}
+```
+- Returns:
+
+```json
+{
+  "current_category": null,
+  "questions": [
+    {
+      "answer": "Apollo 13",
+      "category": 5,
+      "difficulty": 4,
+      "id": 2,
+      "question": "What movie earned Tom Hanks his third straight Oscar nomination, in 1996?"
+    },
+  ],
+  "total_questions": 1
+}
+```
+
+`POST '/api/v1.0/quizzes'`
+- Fetches a random question based on category and previous questions
+- Request Arguments:
+```json
+{
+  "previous_questions": [1, 4, 20, 15],
+  "quiz_category": {
+    "type": "Science",
+    "id": "1"
+  }
+}
+```
+- Returns:
+  
+  ```json
+  {
+    "question": {
+      "answer": "Blood",
+      "category": 1,
+      "difficulty": 4,
+      "id": 2,
+      "question": "Hematology is a branch of medicine involving the study of what?"
+    }
+  }
+  ```
+
+`DELETE '/api/v1.0/questions/<int:question_id>'`
+- Delete a single question based on question id
+- Request Arguments: None
+- Returns:
+
+```json
+{
+  "deleted": 21,
+  "success": true
 }
 ```
 
